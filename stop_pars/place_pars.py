@@ -66,7 +66,7 @@ def restaurant_search(text):
 
     try:
         driver.get(url='https://eda.yandex.ru/')
-        time.sleep(5)
+        time.sleep(15)
         driver.save_screenshot('scrin/2_место_скрин_страницы.png')
         print('open modalsls')
 
@@ -83,6 +83,7 @@ def restaurant_search(text):
                                      "input.AppAddressInput_addressInput.AppAddressInput_modalStyle")
 
         time.sleep(2)
+
         direction_text = text
         for ch in direction_text:
             home_1.send_keys(ch)
@@ -96,27 +97,34 @@ def restaurant_search(text):
 
         driver.save_screenshot('scrin/6_место клик по пикселям адреса.png')
         print('пробуем нажать на кнопку ОК')
-        home_1.find_element('xpath', '/html/body/div[4]/div/div/div/div/div[1]/div[2]/button').click()
+        home_1.find_element('xpath', '/html/body/div[3]/div/div/div/div/div[1]/div[2]/button').click()
         driver.save_screenshot('scrin/7_место скрин Нажали на ок кнопку.png')
 
-        print('Нажали на ок кнопку, прогружаем на скрол...')
+        print('Нажали на ок кнопку, ищем кнопку "Показать ещё"')
 
         driver.save_screenshot('scrin/8_место-скролл попытка.png')
         time.sleep(2)
 
-        top_res = driver.find_element(By.CSS_SELECTOR, ".PlaceList_placesContainer.PlaceList_flexByHeight")
+        top_res = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/div[9]/div/div/div")
         scroll_origin = ScrollOrigin.from_element(top_res)
 
         all_rest = []
         for _ in range(150):
             ActionChains(driver).scroll_from_origin(scroll_origin, 0, 200).perform()
             time.sleep(0.2)
+            try:
+                iframe = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/button[1]")
+                iframe.click()
+                time.sleep(0.5)
+            except Exception:
+                print('кнопка не нашлась')
 
             try:
                 res_names = driver.find_elements(By.CLASS_NAME, "NewPlaceItem_title")
 
                 for item in res_names:
                     if item.text.split('\n') not in all_rest:
+                        print(item.text)
                         all_rest.append(item.text.split('\n'))
             except Exception as ex:
                 print(ex)
@@ -146,6 +154,5 @@ def restaurant_search(text):
     finally:
         driver.close()
         driver.quit()
-
 
 # restaurant_search('Москва, улица Поликарпова, 23Ак14\n')

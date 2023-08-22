@@ -29,23 +29,11 @@ options.add_argument(f'user-agent={user_agents.random}')
 options.add_argument("--incognito")
 options.add_argument("--window-size=1500,1000")
 
+options.add_argument("--headless")
 
-# options.add_argument("--headless")
 
 def search_stop_dishes(cafe_address: str):
-    login = login_proxy
-    password = password_proxy
-
-    proxy = Proxy()
-    proxy.proxy_type = ProxyType.MANUAL
-    proxy.http_proxy = f"{login}:{password}@149.126.218.116:8000"
-    proxy.ssl_proxy = f"{login}:{password}@149.126.218.116:8000"
-
-    capabilities = webdriver.DesiredCapabilities.CHROME
-    proxy.add_to_capabilities(capabilities)
-    time.sleep(2)
-
-    driver = webdriver.Chrome(service=s, options=options, desired_capabilities=capabilities)
+    driver = webdriver.Chrome(service=s, options=options)
 
     driver.get(url='https://eda.yandex.ru/moscow/r/dagestanskaya_lavka?')
     print('START пасринга стоп листа по адресу-', cafe_address)
@@ -119,7 +107,7 @@ def search_stop_dishes(cafe_address: str):
         # ActionChains(driver).move_by_offset(1113, 339).contextClick().perform()
 
         try:
-            home_1.find_element('xpath', '/html/body/div[4]/div/div/div/div/div[1]/div[2]/button').click()
+            home_1.find_element('xpath', '/html/body/div[3]/div/div/div/div/div[1]/div[2]/button').click()
 
             print('...пробуем нажать на кнопку ОК')
             time.sleep(5)
