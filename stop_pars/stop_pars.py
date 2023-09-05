@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import undetected_chromedriver as uc
 
 from secure_data import login_proxy, password_proxy
 import os
@@ -22,17 +23,19 @@ user_agents = UserAgent()
 # s = Service('home/stop_pars/chromedriver')
 s = Service('C:/Users/RVR/PycharmProjects/ya_pars1/stop_pars/chromedriver.exe')
 
-url = 'https://eda.yandex.ru/'
+
 options = webdriver.ChromeOptions()
 options.add_argument("--no-sandbox")
 options.add_argument(f'user-agent={user_agents.random}')
 options.add_argument("--incognito")
 options.add_argument("--window-size=1500,1000")
 
-options.add_argument("--headless")
+# options.add_argument("--headless")
 
 
 def search_stop_dishes(cafe_address: str):
+    # driver = uc.Chrome(service=s, headless=True, use_subprocess=False)
+
     driver = webdriver.Chrome(service=s, options=options)
 
     driver.get(url='https://eda.yandex.ru/moscow/r/dagestanskaya_lavka?')
@@ -41,44 +44,6 @@ def search_stop_dishes(cafe_address: str):
     try:
         time.sleep(15)
         driver.save_screenshot('scrin/1_stop.png')
-        # capcha_start = driver.find_element(By.CLASS_NAME, 'CheckboxCaptcha-Button')
-        # try:
-        #     capcha_start = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, 'CheckboxCaptcha-Button')))
-        #     if capcha_start:
-        #         print('Попали на стартовую капчу')
-        #         capcha_start.click()
-        #         time.sleep(10)
-        #         print('captcha_element')
-        #         captcha_element = driver.find_element(By.XPATH, '//*[@id="advanced-captcha-form"]/div/div[1]/img')
-        #
-        #         # получение URL изображения капчи
-        #         print('получение URL изображения капчи')
-        #         captcha_url = captcha_element.get_attribute("src")
-        #
-        #         # скачивание изображения капчи
-        #         print('скачивание изображения капчи')
-        #         response = requests.get(captcha_url)
-        #         with open("captcha.png", "wb") as f:
-        #             f.write(response.content)
-        #
-        #         # распознавание текста на изображении капчи
-        #         print('распознавание текста на изображении капчи')
-        #         captcha_text = pytesseract.image_to_string("captcha.png")
-        #         time.sleep(100)
-        #         print('ввод распознанного текста в поле для ввода капчи')
-        #         # ввод распознанного текста в поле для ввода капчи
-        #         captcha_input = driver.find_element(By.XPATH, '// *[ @ id = "xuniq-0-1"]')
-        #         captcha_input.send_keys(captcha_text)
-        #
-        #         # нажатие на кнопку подтверждения
-        #         submit_button = driver.find_element(By.XPATH,
-        #                                             '// *[ @ id = "advanced-captcha-form"] / div / div[3] / button[3] / div / span / span')
-        #
-        #         submit_button.click()
-        #
-        # except Exception as ex:
-        #     print(f'Ошибка в капче или ее нет')
-
         print(f'...{cafe_address} open modals - Стартовой капчи не было')
         print()
         driver.find_element(By.CSS_SELECTOR,

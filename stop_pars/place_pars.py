@@ -43,21 +43,21 @@ def restaurant_search(text):
 
         В конце запись файла == text
     """
-    login = login_proxy
-    password = password_proxy
+    # login = login_proxy
+    # password = password_proxy
+    #
+    # proxy = Proxy()
+    # proxy.proxy_type = ProxyType.MANUAL
+    # proxy.http_proxy = f"{login}:{password}@149.126.218.116:8000"
+    # proxy.ssl_proxy = f"{login}:{password}@149.126.218.116:8000"
+    #
+    # capabilities = webdriver.DesiredCapabilities.CHROME
+    # proxy.add_to_capabilities(capabilities)
+    # time.sleep(2)
 
-    proxy = Proxy()
-    proxy.proxy_type = ProxyType.MANUAL
-    proxy.http_proxy = f"{login}:{password}@149.126.218.116:8000"
-    proxy.ssl_proxy = f"{login}:{password}@149.126.218.116:8000"
+    # driver = webdriver.Chrome(service=s, options=options, desired_capabilities=capabilities)
 
-    capabilities = webdriver.DesiredCapabilities.CHROME
-    proxy.add_to_capabilities(capabilities)
-    time.sleep(2)
-
-    driver = webdriver.Chrome(service=s, options=options, desired_capabilities=capabilities)
-
-    # driver = webdriver.Chrome(service=s, options=options)
+    driver = webdriver.Chrome(service=s, options=options)
 
     driver.delete_all_cookies()
     print(f'...Start парсинг место выдачи ресторана по адресу:  {text}')

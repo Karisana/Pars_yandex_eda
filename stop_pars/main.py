@@ -14,7 +14,7 @@ timezone = pytz.timezone('Europe/Moscow')
 def job():
     current_time = datetime.now(timezone).time()
     if current_time.hour == 10 or current_time.hour == 12 or current_time.hour == 14\
-            or current_time.hour == 17:
+            or current_time.hour == 20:
         print(current_time.hour)
 
         print('### Запускаю стоп лист ###')
