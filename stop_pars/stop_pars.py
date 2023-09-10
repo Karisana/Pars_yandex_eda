@@ -1,3 +1,4 @@
+import os
 import time
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
@@ -11,17 +12,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import undetected_chromedriver as uc
 
-from secure_data import login_proxy, password_proxy
-import os
+
 import datetime
 
 # настройки парсинга
 user_agents = UserAgent()
 
-# s = Service('home/stop_pars/chromedriver')
-s = Service('C:/Users/RVR/PycharmProjects/ya_pars1/stop_pars/chromedriver.exe')
+# s = Service('stop_pars/chromedriver.exe')
+s = Service('C:/Users/Nastya/PycharmProjects/PARS_dag/stop_pars/chromedriver.exe')
 
 
 options = webdriver.ChromeOptions()
@@ -30,7 +29,7 @@ options.add_argument(f'user-agent={user_agents.random}')
 options.add_argument("--incognito")
 options.add_argument("--window-size=1500,1000")
 
-# options.add_argument("--headless")
+options.add_argument("--headless")
 
 
 def search_stop_dishes(cafe_address: str):

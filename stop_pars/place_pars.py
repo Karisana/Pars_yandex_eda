@@ -11,7 +11,6 @@ from seleniumwire import webdriver
 
 from datetime import datetime
 
-from secure_data import login_proxy, password_proxy
 
 # need_name -- название нужного ресторана
 need_name = 'Дагестанская Лавка'
@@ -21,8 +20,8 @@ now = datetime.now()
 # настройки парсинга
 user_agents = UserAgent()
 
-# s = Service('home/stop_pars/chromedriver')
-s = Service('C:/Users/RVR/PycharmProjects/ya_pars1/stop_pars/chromedriver.exe')
+# s = Service('stop_pars/chromedriver.exe')
+s = Service('C:/Users/Nastya/PycharmProjects/PARS_dag/stop_pars/chromedriver.exe')
 
 url = 'https://eda.yandex.ru/'
 options = webdriver.ChromeOptions()
@@ -31,7 +30,7 @@ options.add_argument("--no-sandbox")
 options.add_argument(f'user-agent={user_agents.random}')
 options.add_argument("--incognito")
 options.add_argument("--window-size=1500,1500")
-
+options.add_argument("--disable-blink-features=AutomationControlled")
 
 def restaurant_search(text):
     """Парсит сайт яндекс еды.
@@ -82,7 +81,7 @@ def restaurant_search(text):
         home_1 = driver.find_element(By.CSS_SELECTOR,
                                      "input.AppAddressInput_addressInput.AppAddressInput_modalStyle")
 
-        time.sleep(2)
+        time.sleep(7)
 
         direction_text = text
         for ch in direction_text:
@@ -100,35 +99,36 @@ def restaurant_search(text):
         home_1.find_element('xpath', '/html/body/div[3]/div/div/div/div/div[1]/div[2]/button').click()
         driver.save_screenshot('scrin/7_место скрин Нажали на ок кнопку.png')
 
-        print('Нажали на ок кнопку, ищем кнопку "Показать ещё"')
+        print('Нажали на ок кнопку')
 
         driver.save_screenshot('scrin/8_место-скролл попытка.png')
         time.sleep(2)
 
-        top_res = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/div[9]/div/div/div")
+        # top_res = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/div[9]/div/div/div")
+        top_res = driver.find_element(By.CLASS_NAME, 'PlaceList_flexByHeight')
         scroll_origin = ScrollOrigin.from_element(top_res)
-
+        print('Начинаем скрол и поиск адресов')
         all_rest = []
-        for _ in range(150):
-            ActionChains(driver).scroll_from_origin(scroll_origin, 0, 200).perform()
-            time.sleep(0.2)
-            try:
-                iframe = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/button[1]")
-                iframe.click()
-                time.sleep(0.5)
-            except Exception:
-                print('кнопка не нашлась')
+        for _ in range(85):
+            ActionChains(driver).scroll_from_origin(scroll_origin, 0, 400).perform()
+            print('sleep')
+            time.sleep(0.1)
+            # try:
+            #     iframe = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/button[1]")
+            #     iframe.click()
+            #     time.sleep(0.5)
+            # except Exception:
+            #     print('кнопка не нашлась')
 
             try:
                 res_names = driver.find_elements(By.CLASS_NAME, "NewPlaceItem_title")
-
                 for item in res_names:
                     if item.text.split('\n') not in all_rest:
-                        print(item.text)
                         all_rest.append(item.text.split('\n'))
             except Exception as ex:
                 print(ex)
 
+        print(all_rest)
         driver.save_screenshot('scrin/9_место-скролл.png')
         text_file = text.strip().replace(',', '_').replace('/', '_').replace(' ', '')
 
