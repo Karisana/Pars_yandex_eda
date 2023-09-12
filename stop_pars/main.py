@@ -14,19 +14,19 @@ timezone = pytz.timezone('Europe/Moscow')
 def job():
     current_time = datetime.now(timezone).time()
     if current_time.hour == 10 or current_time.hour == 12 or current_time.hour == 14\
-            or current_time.hour == 18:
+            or current_time.hour == 19:
         print(current_time.hour)
-        #
-        # print('### Запускаю стоп лист ###')
-        # for name in cafe_addresses:
-        #     search_stop_dishes(name)
-        # print('### ПАРСИНГ стоп листа ЗАКОНЧЕН ### ')
-        # send_mess_about_stop_list()
-        #
-        # print('___отправляю инфу по стоп листу')
-        #
-        # send_mess_about_rating()
-        #
+
+        print('### Запускаю стоп лист ###')
+        for name in cafe_addresses:
+            search_stop_dishes(name)
+        print('### ПАРСИНГ стоп листа ЗАКОНЧЕН ### ')
+        send_mess_about_stop_list()
+
+        print('___отправляю инфу по стоп листу')
+
+        send_mess_about_rating()
+
         print('### Запускаю место выдачи ###')
         for address in directions:
             print(address)

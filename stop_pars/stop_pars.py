@@ -28,6 +28,7 @@ options.add_argument("--no-sandbox")
 options.add_argument(f'user-agent={user_agents.random}')
 options.add_argument("--incognito")
 options.add_argument("--window-size=1500,1000")
+options.add_argument("--disable-blink-features=AutomationControlled")
 
 options.add_argument("--headless")
 

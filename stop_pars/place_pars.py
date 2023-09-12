@@ -26,7 +26,7 @@ s = Service('C:/Users/Nastya/PycharmProjects/PARS_dag/stop_pars/chromedriver.exe
 url = 'https://eda.yandex.ru/'
 options = webdriver.ChromeOptions()
 options.add_argument("--no-sandbox")
-# options.add_argument("--headless")
+options.add_argument("--headless")
 options.add_argument(f'user-agent={user_agents.random}')
 options.add_argument("--incognito")
 options.add_argument("--window-size=1500,1500")
@@ -95,24 +95,30 @@ def restaurant_search(text):
         print('клик по пикселям адреса')
 
         driver.save_screenshot('scrin/6_место клик по пикселям адреса.png')
-        print('пробуем нажать на кнопку ОК')
-        home_1.find_element('xpath', '/html/body/div[3]/div/div/div/div/div[1]/div[2]/button').click()
-        driver.save_screenshot('scrin/7_место скрин Нажали на ок кнопку.png')
+        try:
+            print('пробуем нажать на кнопку ОК')
+            home_1.find_element('xpath', '/html/body/div[4]/div/div/div/div/div[1]/div[2]/button/span').click()
 
-        print('Нажали на ок кнопку')
+            driver.save_screenshot('scrin/7_место скрин Нажали на ок кнопку.png')
+            print('Нажали на ок кнопку')
+
+        except Exception as ex:
+            print('Не вышло первый раз нажать ОК')
+
 
         driver.save_screenshot('scrin/8_место-скролл попытка.png')
         time.sleep(2)
 
         # top_res = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/div[9]/div/div/div")
         top_res = driver.find_element(By.CLASS_NAME, 'PlaceList_flexByHeight')
+        time.sleep(5)
         scroll_origin = ScrollOrigin.from_element(top_res)
-        print('Начинаем скрол и поиск адресов')
+        print('Начинаем скрол')
         all_rest = []
         for _ in range(85):
-            ActionChains(driver).scroll_from_origin(scroll_origin, 0, 400).perform()
-            print('sleep')
-            time.sleep(0.1)
+            time.sleep(0.3)
+            ActionChains(driver).scroll_from_origin(scroll_origin, 0, 200).perform()
+
             # try:
             #     iframe = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div/div/div/button[1]")
             #     iframe.click()
